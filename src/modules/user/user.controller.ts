@@ -10,3 +10,13 @@ export const registerUser = async (req: Request, res: Response) => {
     message: "User created successfully",
   });
 };
+
+export const getUsers = async (req: Request, res: Response) => {
+  const users = await User.find();
+
+  res.json({
+    success: true,
+    message: "Users retrieved successfully!",
+    data: users,
+  });
+};

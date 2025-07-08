@@ -8,17 +8,30 @@ const userSchema = new Schema<IUser>({
   },
   email: {
     type: String,
+    validate: {
+      validator: (value) => {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+      },
+      message: (props) => `${props.value} is not a valid email`,
+    },
+    unique: [true, `This {VALUE} is already exist`],
   },
   phone: {
     type: String,
+    required: [true, "Your phone number is not valid"],
+    unique: [true, `This {VALUE} is already exist`],
   },
   password: {
     type: String,
   },
   role: {
     type: String,
-    enum: ["Admin", "Customer"],
-    default: "Customer",
+    required: true,
+    enum: {
+      values: ["Admin", "Customer"],
+      message: `{VALUE} is not acceptable`,
+    },
+    // default: "Customer",
   },
 });
 
