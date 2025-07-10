@@ -3,7 +3,9 @@ import Order from "./order.model";
 
 const createOrder = async (req: Request, res: Response) => {
   try {
-    const order = await Order.create(req.body);
+    const order = (await Order.create(req.body).populate("user")).populate(
+      "mango"
+    );
     res.json({
       success: true,
       message: "Order created successfully",
@@ -18,6 +20,24 @@ const createOrder = async (req: Request, res: Response) => {
   }
 };
 
+const getOrders = async (req: Request, res: Response) => {
+  try {
+    const orders = await Order.find();
+    res.json({
+      success: true,
+      message: "Orders retrieved successfully",
+      data: orders,
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({
+      success: false,
+      error,
+    });
+  }
+};
+
 export const orderControllers = {
   createOrder,
+  getOrders,
 };
