@@ -3,9 +3,9 @@ import Order from "./order.model";
 
 const createOrder = async (req: Request, res: Response) => {
   try {
-    const order = (await Order.create(req.body).populate("user")).populate(
-      "mango"
-    );
+    let order = await Order.create(req.body);
+    order = await order.populate("user");
+    order = await order.populate("mango");
     res.json({
       success: true,
       message: "Order created successfully",
